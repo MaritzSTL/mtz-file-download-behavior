@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`mtz-file-download-behavior`
+A behavior for downloading streamed files or creating files based on available data.
+
+@demo demo/index.html
+-->
+
+<dom-module id="mtz-file-download-behavior">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'mtz-file-download-behavior',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'mtz-file-download-behavior',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
