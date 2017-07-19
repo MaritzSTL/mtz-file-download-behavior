@@ -1,34 +1,50 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<!--
-`mtz-file-download-behavior`
-A behavior for downloading streamed files or creating files based on available data.
+<script>
+  const mtz = window.mtz || {};
 
-@demo demo/index.html
--->
+  /**
+   * A behavior for downloading streamed files or creating files based on available data.
+   *
+   * @polymerBehavior
+   * @demo demo/index.html
+   */
+  mtz.FileDownloadBehavior = {
 
-<dom-module id="mtz-file-download-behavior">
-  <template>
-    <style>
-      :host {
-        display: block;
+    /**
+     * Converts the data to a blob then uses navigator save blob if it’s available, otherwise
+     * creates an <a> with [download] attribute then simulates a click.
+     * @param {string} data - data to encode.
+     * @param {string} type - type of file to generate (i.e, text/json).
+     * @param {string} name - file name to save data under..
+     */
+    downloadFromData(data, type, name) {
+      const blob = new Blob([decodeURIComponent(encodeURI(data))], {type});
+      if(window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, name);
+      } else {
+        // Link elements have a download attribute which provides cross-platform
+        // download behavior supporting all but IE 11. This creates new link and then
+        // clicks it to initiate download.
+        const link = document.createElement('a');
+        link.className = 'file-download';
+        link.href = (window.URL || window.webkitURL).createObjectURL(blob);
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
       }
-    </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
+    },
 
-  <script>
-    Polymer({
-
-      is: 'mtz-file-download-behavior',
-
-      properties: {
-        prop1: {
-          type: String,
-          value: 'mtz-file-download-behavior',
-        },
-      },
-
-    });
-  </script>
-</dom-module>
+    /**
+     * Opens a new tab at the URI so that download can be initiated from the page.
+     * @param {string} uri - The uri to open.
+     * @param {Boolean} newTab - If false, downloads uri in existing tab. Otherwise, downloads in
+     * new tab.
+     * @returns {boolean} Returns true.
+     */
+    downloadFromURI(uri, newTab) {
+      window.open(uri, newTab ? '_blank' : '_self');
+      return true; // NOTE: Returning true to prevent error in some browsers during download.
+    }
+  };
+</script>

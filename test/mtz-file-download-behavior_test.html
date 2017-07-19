@@ -14,15 +14,34 @@
   <body>
     <test-fixture id="basic">
       <template>
-        <mtz-file-download-behavior></mtz-file-download-behavior>
+        <file-downloader></file-downloader>
       </template>
     </test-fixture>
 
+    <dom-module id="file-downloader">
+      <template>
+      </template>
+      <script>
+        window.addEventListener('WebComponentsReady', () => {
+          Polymer({
+            is: 'file-downloader',
+            behaviors: [
+              mtz.FileDownloadBehavior
+            ]
+          });
+        });
+      </script>
+    </dom-module>
+
     <script>
-      suite('mtz-file-download-behavior', function() {
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'mtz-file-download-behavior');
+      describe('mtz-file-download-behavior', () => {
+        describe('public', () => {
+          describe('downloadFromData', () => {
+            it('should download the data')
+          });
+          describe('downloadFromURI', () => {
+
+          });
         });
       });
     </script>
