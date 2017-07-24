@@ -38,12 +38,14 @@
                     mtz.FileDownloadBehavior
                   ],
                   // Open data at a URI in a new tab or the current tab allowing the user
-                  // to save if they so desire.
+                  // to save if they so desire. Note that different file types trigger
+                  // slightly different download behavior. I.e, a text file may open in
+                  // the browser before download whereas a .csv will download automatically.
                   openUriInNewTab() {
-                    this.downloadFromURI('https://github.com/MaritzSTL/mtz-file-download-behavior/tree/master/demo/sample.csv', true);
+                    this.downloadFromURI('sample.csv', true);
                   },
                   openUriInCurrentTab() {
-                    this.downloadFromURI('https://github.com/MaritzSTL/mtz-file-download-behavior/tree/master/demo/sample.csv', false);
+                    this.downloadFromURI('sample.csv', false);
                   },
                   // Serialize a string of data to a <mime-type> file.
                   createFile() {
