@@ -18,7 +18,7 @@
      * @param {String} type - type of file to generate (i.e, text/json).
      * @param {String} [name = 'download'] - file name to save data under..
      */
-    downloadFromData(data, type, name='download') {
+    downloadFromData(data, type, name = 'download') {
       const blob = new Blob([decodeURIComponent(encodeURI(data))], {type});
       if(window.navigator && window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob, name);
@@ -40,7 +40,7 @@
      * @param {String} uri - The uri to open.
      * @param {Boolean} [newTab = true] - If false, downloads uri in existing tab. Otherwise,
      * downloads in new tab.
-     * @returns {Boolean} Returns true.
+     * @return {Boolean} Returns true.
      */
     downloadFromURI(uri, newTab = true) {
       window.open(uri, newTab ? '_blank' : '_self');
