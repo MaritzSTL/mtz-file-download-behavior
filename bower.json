@@ -3,7 +3,8 @@
   "description": "A behavior for downloading streamed files or creating files based on available data.",
   "main": "mtz-file-download-behavior.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.9 || ^2.0"
+    "polymer": "Polymer/polymer#^1.9 || ^2.0",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^1.0 || 2.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0 || ^2.0",
@@ -14,7 +15,8 @@
   "variants": {
     "1.x": {
       "dependencies": {
-        "polymer": "Polymer/polymer#^1.9.0"
+        "polymer": "Polymer/polymer#^1.9.0",
+        "app-localize-behavior": "PolymerElements/app-localize-behavior#^1.0.2"
       },
       "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

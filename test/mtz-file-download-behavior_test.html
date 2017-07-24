@@ -69,7 +69,6 @@
               const linkElement = {};
               linkElement.click = sinon.spy();
               window.navigator.msSaveOrOpenBlob = undefined;
-              // debugger;
               sinon.stub(window.document, 'createElement').withArgs('a').returns(linkElement);
               window.document.body.appendChild = sinon.spy();
               element.downloadFromData('Some amazing data string.', 'text/plain', 'sweet-name');

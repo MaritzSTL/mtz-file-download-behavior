@@ -14,9 +14,9 @@
     /**
      * Converts the data to a blob then uses navigator to save blob if it’s available, otherwise
      * creates an <a> with [download] attribute then simulates a click.
-     * @param {string} data - data to encode.
-     * @param {string} type - type of file to generate (i.e, text/json).
-     * @param {string} name - file name to save data under..
+     * @param {String} data - data to encode.
+     * @param {String} type - type of file to generate (i.e, text/json).
+     * @param {String} name - file name to save data under..
      */
     downloadFromData(data, type, name) {
       const blob = new Blob([decodeURIComponent(encodeURI(data))], {type});
@@ -37,10 +37,10 @@
 
     /**
      * Opens a new tab at the URI so that download can be initiated from the page.
-     * @param {string} uri - The uri to open.
+     * @param {String} uri - The uri to open.
      * @param {Boolean} newTab - If false, downloads uri in existing tab. Otherwise, downloads in
      * new tab.
-     * @returns {boolean} Returns true.
+     * @returns {Boolean} Returns true.
      */
     downloadFromURI(uri, newTab) {
       window.open(uri, newTab ? '_blank' : '_self');

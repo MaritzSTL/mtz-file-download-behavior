@@ -40,15 +40,16 @@
                   // Open data at a URI in a new tab or the current tab allowing the user
                   // to save if they so desire.
                   openUriInNewTab() {
-                    this.downloadFromURI('./sample.txt', true);
+                    this.downloadFromURI('https://github.com/MaritzSTL/mtz-file-download-behavior/tree/master/demo/sample.csv', true);
                   },
                   openUriInCurrentTab() {
-                    this.downloadFromURI('./sample.txt', false);
+                    this.downloadFromURI('https://github.com/MaritzSTL/mtz-file-download-behavior/tree/master/demo/sample.csv', false);
                   },
                   // Serialize a string of data to a <mime-type> file.
                   createFile() {
-                    const data = "You've serialized data to file. Happy days!!!";
-                    this.downloadFromData(data, 'text/plain', 'newFileNameHere');
+                    const data = 'firstname, middlename, lastname, address_number, address_street, address_city, address_state, address_zip, is_cool\n' +
+                    'Jimmy, Jack, Awesome, 4242, Pendleton Ave, Saint Louis, MO, 63132, true';
+                    this.downloadFromData(data, 'text/csv', 'sample.csv');
                   }
                 });
               });
