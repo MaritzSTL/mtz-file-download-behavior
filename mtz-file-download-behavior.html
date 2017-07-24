@@ -1,7 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <script>
-  const mtz = window.mtz || {};
+  window.mtz = window.mtz || {};
 
   /**
    * A behavior for downloading streamed files or creating files based on available data.
@@ -16,9 +16,9 @@
      * creates an <a> with [download] attribute then simulates a click.
      * @param {String} data - data to encode.
      * @param {String} type - type of file to generate (i.e, text/json).
-     * @param {String} name - file name to save data under..
+     * @param {String} [name = 'download'] - file name to save data under..
      */
-    downloadFromData(data, type, name) {
+    downloadFromData(data, type, name='download') {
       const blob = new Blob([decodeURIComponent(encodeURI(data))], {type});
       if(window.navigator && window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob, name);
@@ -38,11 +38,11 @@
     /**
      * Opens a new tab at the URI so that download can be initiated from the page.
      * @param {String} uri - The uri to open.
-     * @param {Boolean} newTab - If false, downloads uri in existing tab. Otherwise, downloads in
-     * new tab.
+     * @param {Boolean} [newTab = true] - If false, downloads uri in existing tab. Otherwise,
+     * downloads in new tab.
      * @returns {Boolean} Returns true.
      */
-    downloadFromURI(uri, newTab) {
+    downloadFromURI(uri, newTab = true) {
       window.open(uri, newTab ? '_blank' : '_self');
       return true; // NOTE: Returning true to prevent error in some browsers during download.
     }
