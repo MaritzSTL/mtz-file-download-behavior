@@ -29,22 +29,8 @@
           Polymer({
             is: 'file-downloader',
             behaviors: [
-              // Register the behavior
               mtz.FileDownloadBehavior
-            ],
-            // Open data at a URI in a new tab or the current tab allowing the user
-            // to save if they so desire.
-            openUriInNewTab() {
-              this.downloadFromURI('./sample.txt', true);
-            },
-            openUriInCurrentTab() {
-              this.downloadFromURI('./sample.txt', false);
-            },
-            // Serialize a string of data to a <mime-type> file.
-            createFile() {
-              const data = "You've serialized data to file. Happy days!!!";
-              this.downloadFromData(data, 'text/plain', 'newFileNameHere');
-            }
+            ]
           });
         });
       </script>
