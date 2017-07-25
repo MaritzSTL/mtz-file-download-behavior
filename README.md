@@ -1,3 +1,6 @@
+[![Build Status](https://img.shields.io/travis/MaritzSTL/mtz-file-download-behavior/master.svg?style=flat-square)](https://travis-ci.org/MaritzSTL/mtz-file-download-behavior)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg?style=flat-square)](https://www.webcomponents.org/element/MaritzSTL/mtz-file-download-behavior)
+
 # \<mtz-file-download-behavior\>
 
 A behavior for downloading streamed files or creating files based on available data.

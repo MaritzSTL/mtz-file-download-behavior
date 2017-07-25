@@ -20,7 +20,44 @@
       <h3>Basic mtz-file-download-behavior demo</h3>
       <demo-snippet>
         <template>
-          <mtz-file-download-behavior></mtz-file-download-behavior>
+
+          <file-downloader></file-downloader>
+
+          <dom-module id="file-downloader">
+            <template>
+              <button on-click="openUriInNewTab">Open In New Tab</button>
+              <button on-click="openUriInCurrentTab">Open In Current Tab</button>
+              <button on-click="createFile">Create File</button>
+            </template>
+            <script>
+              window.addEventListener('WebComponentsReady', () => {
+                Polymer({
+                  is: 'file-downloader',
+                  behaviors: [
+                    // Register use of the behavior
+                    mtz.FileDownloadBehavior
+                  ],
+                  // Open data at a URI in a new tab or the current tab allowing the user
+                  // to save if they so desire. Note that different file types trigger
+                  // slightly different download behavior. I.e, a text file may open in
+                  // the browser before download whereas a .csv will download automatically.
+                  openUriInNewTab() {
+                    this.downloadFromURI('sample.csv', true);
+                  },
+                  openUriInCurrentTab() {
+                    this.downloadFromURI('sample.csv', false);
+                  },
+                  // Serialize a string of data to a <mime-type> file.
+                  createFile() {
+                    const data = 'firstname, middlename, lastname, address_number, address_street, address_city, address_state, address_zip, is_cool\n' +
+                    'Jimmy, Jack, Awesome, 4242, Pendleton Ave, Saint Louis, MO, 63132, true';
+                    this.downloadFromData(data, 'text/csv', 'sample.csv');
+                  }
+                });
+              });
+            </script>
+          </dom-module>
+
         </template>
       </demo-snippet>
     </div>
