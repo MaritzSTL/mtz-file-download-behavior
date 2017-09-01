@@ -53,8 +53,8 @@
               window.navigator.msSaveOrOpenBlob = undefined;
               window.URL = {createObjectURL: sinon.stub().returns('test-url')};
               sinon.stub(window.document, 'createElement').withArgs('a').returns(linkElement);
-              Polymer.dom(element).appendChild = sinon.spy();
-              Polymer.dom(element).removeChild = sinon.spy();
+              sinon.spy(Polymer.dom(element), 'appendChild');
+              sinon.spy(Polymer.dom(element), 'removeChild');
               element.downloadFromData('Some amazing data string.', 'CSV', 'sweet-name');
               expect(Blob).to.have.been.calledWithMatch(['Some amazing data string.'], {type: 'text/csv'});
               expect(Polymer.dom(element).appendChild).to.have.been.called;
