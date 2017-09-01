@@ -43,29 +43,30 @@
           describe('downloadFromData', () => {
             it('should initiate download the data using msSaveOrOpenBlob if navigator is detected', () => {
               window.navigator.msSaveOrOpenBlob = sinon.spy()
-              element.downloadFromData('Some amazing data string.', 'text/plain', 'newFile');
+              element.downloadFromData('Some amazing data string.', 'JSON', 'newFile');
               expect(window.navigator.msSaveOrOpenBlob).to.be.called;
             });
             it('should download the data using link tag if navigator is not found', () => {
               const linkElement = {};
               linkElement.click = sinon.spy();
+              Blob = sinon.stub().returns('asdfasdf');
               window.navigator.msSaveOrOpenBlob = undefined;
+              window.URL = {createObjectURL: sinon.stub().returns('test-url')};
               sinon.stub(window.document, 'createElement').withArgs('a').returns(linkElement);
               window.document.body.appendChild = sinon.spy();
-              element.downloadFromData('Some amazing data string.', 'text/plain', 'sweet-name');
+              element.downloadFromData('Some amazing data string.', 'CSV', 'sweet-name');
+              expect(Blob).to.have.been.calledWithMatch(['Some amazing data string.'], {type: 'text/csv'});
               expect(linkElement.className).to.equal('file-download');
               expect(linkElement.href).to.be.a('string');
-              expect(linkElement.download).to.equal('sweet-name');
+              expect(linkElement.download).to.equal('sweet-name.csv');
               expect(linkElement.click).to.be.called;
             });
             it('should default name to "download" if none is provided', () => {
-              const data = 'Some amazing data string.';
-              const type = 'text/plain';
               window.navigator.msSaveOrOpenBlob = sinon.spy()
-              element.downloadFromData(data, type);
+              element.downloadFromData('Some amazing data string.', 'TXT');
               // Get the download argument from the spy
               const fileNameArg = window.navigator.msSaveOrOpenBlob.getCall(0).args[1];
-              expect(fileNameArg).to.equal('download');
+              expect(fileNameArg).to.equal('download.txt');
             });
           });
           describe('downloadFromURI', () => {

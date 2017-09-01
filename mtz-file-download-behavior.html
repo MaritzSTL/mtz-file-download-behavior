@@ -11,17 +11,34 @@
    */
   mtz.FileDownloadBehavior = {
 
+    properties: {
+      /* MIME type lookup for file extensions */
+      fileTypes: {
+        type: Object,
+        value() {
+          return {
+            CSV: 'text/csv',
+            JSON: 'text/json',
+            PDF: 'application/pdf',
+            TXT: 'text/plain',
+          };
+        },
+      },
+    },
+
     /**
      * Converts the data to a blob then uses navigator to save blob if it’s available, otherwise
      * creates an <a> with [download] attribute then simulates a click.
      * @param {String} data - data to encode.
-     * @param {String} type - type of file to generate (i.e, text/json).
+     * @param {String} type - type of file to generate (i.e, JSON or CSV).
      * @param {String} [name = 'download'] - file name to save data under..
      */
     downloadFromData(data, type, name = 'download') {
-      const blob = new Blob([decodeURIComponent(encodeURI(data))], {type});
+      const mimeType = this.fileTypes[type.toUpperCase()];
+      const blob = new Blob([decodeURIComponent(encodeURI(data))], {type: mimeType});
+      const filename = name + '.' + type.toLowerCase();
       if(window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, name);
+        window.navigator.msSaveOrOpenBlob(blob, filename);
       } else {
         // Link elements have a download attribute which provides cross-platform
         // download behavior supporting all but IE 11. This creates new link and then
@@ -29,7 +46,7 @@
         const link = document.createElement('a');
         link.className = 'file-download';
         link.href = (window.URL || window.webkitURL).createObjectURL(blob);
-        link.download = name;
+        link.download = filename;
         document.body.appendChild(link);
         link.click();
       }
