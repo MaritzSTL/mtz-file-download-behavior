@@ -47,19 +47,22 @@
               expect(window.navigator.msSaveOrOpenBlob).to.be.called;
             });
             it('should download the data using link tag if navigator is not found', () => {
-              const linkElement = {};
+              const linkElement = document.createElement('a');
               linkElement.click = sinon.spy();
               Blob = sinon.stub().returns('asdfasdf');
               window.navigator.msSaveOrOpenBlob = undefined;
               window.URL = {createObjectURL: sinon.stub().returns('test-url')};
               sinon.stub(window.document, 'createElement').withArgs('a').returns(linkElement);
               window.document.body.appendChild = sinon.spy();
+              window.document.body.removeChild = sinon.spy();
               element.downloadFromData('Some amazing data string.', 'CSV', 'sweet-name');
               expect(Blob).to.have.been.calledWithMatch(['Some amazing data string.'], {type: 'text/csv'});
+              expect(window.document.body.appendChild).to.have.been.called;
               expect(linkElement.className).to.equal('file-download');
               expect(linkElement.href).to.be.a('string');
               expect(linkElement.download).to.equal('sweet-name.csv');
-              expect(linkElement.click).to.be.called;
+              expect(linkElement.click).to.have.been.called;
+              expect(window.document.body.removeChild).to.have.been.called;
             });
             it('should default name to "download" if none is provided', () => {
               window.navigator.msSaveOrOpenBlob = sinon.spy()
