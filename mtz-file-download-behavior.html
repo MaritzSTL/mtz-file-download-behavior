@@ -47,9 +47,9 @@
         link.className = 'file-download';
         link.href = (window.URL || window.webkitURL).createObjectURL(blob);
         link.download = filename;
-        document.body.appendChild(link);
+        this.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        this.removeChild(link);
       }
     },
 
