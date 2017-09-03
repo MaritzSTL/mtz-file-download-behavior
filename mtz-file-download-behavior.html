@@ -31,9 +31,11 @@
      * creates an <a> with [download] attribute then simulates a click.
      * @param {String} data - data to encode.
      * @param {String} type - type of file to generate (i.e, JSON or CSV).
-     * @param {String} [name = 'download'] - file name to save data under..
+     * @param {String} [name = 'download'] - file name to save data under.
+     * @param {Boolean} [newTab = true] - If false, downloads uri in existing tab. Otherwise,
+     * downloads in new tab.
      */
-    downloadFromData(data, type, name = 'download') {
+    downloadFromData(data, type, name = 'download', newTab = true) {
       const mimeType = this.fileTypes[type.toUpperCase()];
       const blob = new Blob([decodeURIComponent(encodeURI(data))], {type: mimeType});
       const filename = name + '.' + type.toLowerCase();
@@ -44,12 +46,12 @@
         // download behavior supporting all but IE 11. This creates new link and then
         // clicks it to initiate download.
         const link = document.createElement('a');
-        link.className = 'file-download';
         link.href = (window.URL || window.webkitURL).createObjectURL(blob);
         link.download = filename;
-        Polymer.dom(this).appendChild(link);
+        link.target = newTab ? '_blank' : '_self';
+        Polymer.dom(this.root).appendChild(link);
         link.click();
-        Polymer.dom(this).removeChild(link);
+        Polymer.dom(this.root).removeChild(link);
       }
     },
 
