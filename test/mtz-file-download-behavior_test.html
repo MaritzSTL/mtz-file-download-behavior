@@ -41,35 +41,53 @@
 
         describe('public', () => {
           describe('downloadFromData', () => {
+            let linkElement;
+            beforeEach(() => {
+              linkElement = document.createElement('a');
+              linkElement.click = sinon.spy();
+              window.document.createElement = sinon.stub().withArgs('a').returns(linkElement);
+            });
             it('should initiate download the data using msSaveOrOpenBlob if navigator is detected', () => {
               window.navigator.msSaveOrOpenBlob = sinon.spy()
               element.downloadFromData('Some amazing data string.', 'JSON', 'newFile');
               expect(window.navigator.msSaveOrOpenBlob).to.be.called;
             });
             it('should download the data using link tag if navigator is not found', () => {
-              const linkElement = document.createElement('a');
-              linkElement.click = sinon.spy();
               Blob = sinon.stub().returns('asdfasdf');
               window.navigator.msSaveOrOpenBlob = undefined;
               window.URL = {createObjectURL: sinon.stub().returns('test-url')};
-              sinon.stub(window.document, 'createElement').withArgs('a').returns(linkElement);
               sinon.spy(Polymer.dom(element), 'appendChild');
               sinon.spy(Polymer.dom(element), 'removeChild');
               element.downloadFromData('Some amazing data string.', 'CSV', 'sweet-name');
               expect(Blob).to.have.been.calledWithMatch(['Some amazing data string.'], {type: 'text/csv'});
               expect(Polymer.dom(element).appendChild).to.have.been.called;
-              expect(linkElement.className).to.equal('file-download');
               expect(linkElement.href).to.be.a('string');
               expect(linkElement.download).to.equal('sweet-name.csv');
+              expect(linkElement.target).to.equal('_blank');
               expect(linkElement.click).to.have.been.called;
               expect(Polymer.dom(element).removeChild).to.have.been.called;
             });
             it('should default name to "download" if none is provided', () => {
-              window.navigator.msSaveOrOpenBlob = sinon.spy()
+              window.navigator.msSaveOrOpenBlob = sinon.spy();
               element.downloadFromData('Some amazing data string.', 'TXT');
               // Get the download argument from the spy
               const fileNameArg = window.navigator.msSaveOrOpenBlob.getCall(0).args[1];
               expect(fileNameArg).to.equal('download.txt');
+            });
+            it('should use same tab if newTab is set to false', () => {
+              Blob = sinon.stub().returns('asdfasdf');
+              window.navigator.msSaveOrOpenBlob = undefined;
+              window.URL = {createObjectURL: sinon.stub().returns('test-url')};
+              sinon.spy(Polymer.dom(element), 'appendChild');
+              sinon.spy(Polymer.dom(element), 'removeChild');
+              element.downloadFromData('Some amazing data string.', 'TXT', 'sweet-name', false);
+              expect(Blob).to.have.been.calledWithMatch(['Some amazing data string.'], {type: 'text/plain'});
+              expect(Polymer.dom(element).appendChild).to.have.been.called;
+              expect(linkElement.href).to.be.a('string');
+              expect(linkElement.download).to.equal('sweet-name.txt');
+              expect(linkElement.target).to.equal('_self');
+              expect(linkElement.click).to.have.been.called;
+              expect(Polymer.dom(element).removeChild).to.have.been.called;
             });
           });
           describe('downloadFromURI', () => {
